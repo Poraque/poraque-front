@@ -4,14 +4,18 @@ import { useNavigation } from '@react-navigation/native'
 import { LogoUser, IconFilter, IconBrilho, IconUser, IconMala, Local1 } from '../assets';
 import MenuContainer from '../components/MenuContainer';
 import ItemCardContainer from '../components/ItemCardContainer';
-//import { getData } from '../api';
+import ItemCardContainerFilter from '../components/ItemCardContainerFilter';
+import { API } from '../api/api';
+
 
 const HomeScreen = ({route}) => {
 
     const navigation = useNavigation();
     const [data, setData] = useState([]);
     const [type, setType] = useState("sujestão");
-    const [isLoading, setIsLoading] = useState(false );
+    const [isLoading, setIsLoading] = useState(false);
+    const [filter, setFilter] = useState(false);
+
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -24,6 +28,13 @@ const HomeScreen = ({route}) => {
             setData(route.params.eventsHome)
         }
     }, [])
+
+    const getFilterEvent = async (start, category, stars) =>{
+        const api = new API()
+        const events = await api.getEventsFiltered(start, category, stars)
+        setFilter(await events)
+        console.log(await events);
+    }
 
 /*
     useEffect(() => {
@@ -91,7 +102,9 @@ const HomeScreen = ({route}) => {
                     <Text
                     className ="text-[#393F4E] font-semibold text-lg"
                     >Pontos Turísticos</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity 
+                    onPress={() => getFilterEvent(0, "Turistico", 0)}
+                    >
                         <Text
                         className="text-[#277AFF]"
                         >{'Ver main >'}</Text>
@@ -224,9 +237,39 @@ const HomeScreen = ({route}) => {
                     </FlatList>
                 </View>
             </View>
+            
+
+            
+            
+
         </ScrollView>
         }
-        
+    {filter ? <View className="mt-6" style={{marginBottom:150}}>
+                <View className="flex-row justify-between mx-4">
+                    <Text
+                    className ="text-[#393F4E] font-semibold text-lg"
+                    >Busca</Text>
+                </View>
+                <View
+                    className="px-4 mt-4 items-center justify-evenly"
+                >
+                    <FlatList
+                    className="-mx-4"
+                        data={filter}
+                        keyExtractor={(item) => String(item._id)}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({item}) => {
+                            return <View
+                            style={styleFilter.shadow}>
+                                    <ItemCardContainerFilter
+                                    key={item._id} imageSrc={Local1} title={item.event_title} />
+                                </View>
+                        }}
+                    >
+                    </FlatList>
+                </View>
+            </View>
+     : null}
     </SafeAreaView>
   )
 }
@@ -237,6 +280,20 @@ const styles = StyleSheet.create({
         shadowOffset: {
             width: 0,
             height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
+    }
+})
+
+const styleFilter = StyleSheet.create({
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
         },
         shadowOpacity: 0.22,
         shadowRadius: 2.22,

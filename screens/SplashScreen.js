@@ -23,7 +23,7 @@ const SplashScreen = () => {
             await api.getAllEvents().then((value)=>{
               setData(value);
             });
-            
+            console.log(data)
         }catch(err){
             //dev
             console.log(err);
@@ -33,9 +33,10 @@ const SplashScreen = () => {
   }, [])
 
   useEffect(()=>{
-    data == undefined ? null : navigation.navigate("TabNavigation",{
-      eventsHome: data,
-    })
+    if(data){
+    navigation.navigate("TabNavigation",{
+      eventsHome: data,}
+    )}
   }, [data])
   
   return (

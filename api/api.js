@@ -10,7 +10,7 @@ export class API{
                 'Content-Type': 'application/json'
               }
         });
-
+        console.log(await response)
         return await response.json();
     }
 
@@ -36,6 +36,13 @@ export class API{
         });
     }
 
-
-
+    getEventsFiltered = async (start, category, stars) =>{
+        const response = await fetch(this.BASEURL+`event/filter=?start=${start}&category=${category}&stars=${stars}`,{
+            method:"GET",
+            header: {
+                'Content-Type': 'application/json'
+              }
+        })
+        return await response.json();
+    }
 }
