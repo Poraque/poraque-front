@@ -23,7 +23,6 @@ const SplashScreen = () => {
             await api.getAllEvents().then((value)=>{
               setData(value);
             });
-            console.log(data)
         }catch(err){
             //dev
             console.log(err);

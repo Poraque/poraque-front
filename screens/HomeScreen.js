@@ -1,5 +1,5 @@
-import { View, ActivityIndicator, Text, ScrollView, StyleSheet, FlatList, SafeAreaView, Image, TextInput, TouchableOpacity } from 'react-native'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { View, ActivityIndicator, Text, ScrollView, StyleSheet, FlatList, SafeAreaView, Image, TextInput, TouchableOpacity, BackHandler } from 'react-native'
+import React, { useEffect, useLayoutEffect, useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { LogoUser, IconFilter, IconBrilho, IconUser, IconMala, Local1 } from '../assets';
 import MenuContainer from '../components/MenuContainer';
@@ -34,7 +34,6 @@ const HomeScreen = ({route}) => {
         const api = new API()
         const events = await api.getEventsFiltered(start, category, stars)
         setFilter(await events)
-        console.log(await events);
     }
 
 /*
@@ -46,7 +45,13 @@ const HomeScreen = ({route}) => {
     }, []);
 */
     useBackHandler(() => {
-        return true;
+        if(filter){
+            setFilter(false);
+            return true;    
+        }else{
+            BackHandler.exitApp()
+            return false;
+        }
     });
 
   return (
