@@ -29,3 +29,7 @@ export {default as BarSalvos} from "./bar-salvos.png";
 export {default as BarSalvosSelect} from "./bar-salvos-select.png";
 export {default as BarAgencias} from "./bar-agencias.png";
 export {default as BarAgenciasSelect} from "./bar-agencias-select.png";
+
+export {default as Pexe} from "./pexe.png";
+export {default as CoolEmoji} from "./cool.png";
+export {default as HeartEmoji} from "./heart.png";

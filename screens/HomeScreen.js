@@ -7,6 +7,7 @@ import ItemCardContainer from '../components/ItemCardContainer';
 import ItemCardContainerFilter from '../components/ItemCardContainerFilter';
 import { API } from '../api/api';
 
+import {useBackHandler} from '@react-native-community/hooks';
 
 const HomeScreen = ({route}) => {
 
@@ -21,11 +22,11 @@ const HomeScreen = ({route}) => {
         navigation.setOptions({
         headerShown: false,
         })
-    }, [])
+    }, []);
 
     useEffect(()=>{
         if(route.params){
-            setData(route.params.eventsHome)
+            setData(route.params.eventsHome);
         }
     }, [])
 
@@ -44,6 +45,10 @@ const HomeScreen = ({route}) => {
         });
     }, []);
 */
+    useBackHandler(() => {
+        return true;
+    });
+
   return (
     <SafeAreaView className=" bg-white flex-1">
         <View className=" flex-row items-center justify-center mt-10 mb-2">
@@ -107,7 +112,7 @@ const HomeScreen = ({route}) => {
                     >
                         <Text
                         className="text-[#277AFF]"
-                        >{'Ver main >'}</Text>
+                        >{'Ver mais >'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View
@@ -142,7 +147,7 @@ const HomeScreen = ({route}) => {
                     <TouchableOpacity>
                         <Text
                         className="text-[#277AFF]"
-                        >{'Ver main >'}</Text>
+                        >{'Ver mais >'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View
@@ -177,7 +182,7 @@ const HomeScreen = ({route}) => {
                     <TouchableOpacity>
                         <Text
                         className="text-[#277AFF]"
-                        >{'Ver main >'}</Text>
+                        >{'Ver mais >'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View
@@ -212,7 +217,7 @@ const HomeScreen = ({route}) => {
                     <TouchableOpacity>
                         <Text
                         className="text-[#277AFF]"
-                        >{'Ver main >'}</Text>
+                        >{'Ver mais >'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View

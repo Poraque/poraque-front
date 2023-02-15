@@ -51,18 +51,14 @@ const SplashScreen = () => {
           className="h-40 object-fill mt-24 -mb-24"
         />
       </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("TabNavigation")}
-      >
-        <View className="flex-2 relative items-center justify-center">
-          <Animatable.Image
-            animation={"fadeInDown"}
-            easing="ease-in-out"
-            source={LogoImage}
-            className="h-40 object-fill mt-10"
-          />
-        </View>
-      </TouchableOpacity>
+      <View className="flex-2 relative items-center justify-center">
+        <Animatable.Image
+          animation={"fadeInDown"}
+          easing="ease-in-out"
+          source={LogoImage}
+          className="h-40 object-fill mt-10"
+        />
+      </View>
       <View className="flex-1 relative items-center justify-center">
         <Animatable.Image
           animation={"fadeInUp"}
