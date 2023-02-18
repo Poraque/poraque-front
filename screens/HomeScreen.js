@@ -8,15 +8,18 @@ import ItemCardContainerFilter from '../components/ItemCardContainerFilter';
 import { API } from '../api/api';
 
 import {useBackHandler} from '@react-native-community/hooks';
+import _ from 'lodash';
 
 const HomeScreen = ({route}) => {
-
+    const api = new API()
     const navigation = useNavigation();
     const [data, setData] = useState([]);
     const [type, setType] = useState("sujestão");
     const [isLoading, setIsLoading] = useState(false);
     const [filter, setFilter] = useState(false);
-
+    const [searchText, setSearchText] = useState('');
+    const [actualPage, setActualPage] = useState(0)
+    const [prevEvents, setPrevEvents] = useState([]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -24,16 +27,50 @@ const HomeScreen = ({route}) => {
         })
     }, []);
 
+    const delaySearch = _.debounce( async (text)=>{
+        if(searchText){
+            const events = await api.searchEvents(searchText, actualPage);
+            
+            if(prevEvents && !events.includes(prevEvents[0])){
+                setFilter(events);
+            }
+            setPrevEvents(events);
+        }
+    }, 800);
+
+    const loadMore = async ()=>{
+        setActualPage(actualPage + 1)
+        if(searchText && actualPage != 0){
+            
+                        
+            const events = await api.searchEvents(searchText, actualPage);
+            let newFilter = filter.concat(events)
+            
+            
+            
+            if(newFilter.length < 30){
+               setFilter(newFilter);
+            }
+        }
+    }
+
+    const handleSearchTextChange = (text) =>{
+        setActualPage(0);
+        setSearchText(text);
+        delaySearch();
+    }
+    
+
     useEffect(()=>{
         if(route.params){
             setData(route.params.eventsHome);
         }
     }, [])
 
-    const getFilterEvent = async (start, category, stars) =>{
-        const api = new API()
-        const events = await api.getEventsFiltered(start, category, stars)
-        setFilter(await events)
+    const searchTypeEvents = async (type, start) =>{
+        
+        const events = await api.searchTypeEvents(type, start)
+        setFilter([events])
     }
 
 /*
@@ -47,6 +84,8 @@ const HomeScreen = ({route}) => {
     useBackHandler(() => {
         if(filter){
             setFilter(false);
+            setActualPage(0);
+            setSearchText('');
             return true;    
         }else{
             BackHandler.exitApp()
@@ -67,7 +106,9 @@ const HomeScreen = ({route}) => {
                     flex-row items-center
                     bg-[#EEEFF0] mx-4
                     rounded-xl py-1
-                    px4 shadow-lg"        
+                    px4 shadow-lg"
+                onChangeText={(string)=>{handleSearchTextChange(string)}}
+                value={searchText}
             />
             <Image
             source={IconFilter}
@@ -113,7 +154,7 @@ const HomeScreen = ({route}) => {
                     className ="text-[#393F4E] font-semibold text-lg"
                     >Pontos Turísticos</Text>
                     <TouchableOpacity 
-                    onPress={() => getFilterEvent(0, "Turistico", 0)}
+                    onPress={() => searchTypeEvents("Turistico", 0)}
                     >
                         <Text
                         className="text-[#277AFF]"
@@ -149,7 +190,8 @@ const HomeScreen = ({route}) => {
                     <Text
                     className ="text-[#393F4E] font-semibold text-lg"
                     >Hotéis</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={() => searchTypeEvents("Hotel", 0)}>
                         <Text
                         className="text-[#277AFF]"
                         >{'Ver mais >'}</Text>
@@ -184,7 +226,8 @@ const HomeScreen = ({route}) => {
                     <Text
                     className ="text-[#393F4E] font-semibold text-lg"
                     >Festivais</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={() => searchTypeEvents("Festival", 0)}>
                         <Text
                         className="text-[#277AFF]"
                         >{'Ver mais >'}</Text>
@@ -219,7 +262,8 @@ const HomeScreen = ({route}) => {
                     <Text
                     className ="text-[#393F4E] font-semibold text-lg"
                     >Feiras</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={() => searchTypeEvents("Feira", 0)}>
                         <Text
                         className="text-[#277AFF]"
                         >{'Ver mais >'}</Text>
@@ -254,7 +298,7 @@ const HomeScreen = ({route}) => {
 
         </ScrollView>
         }
-    {filter ? <View className="mt-6" style={{marginBottom:150}}>
+    {filter ? <View className="mt-6" style={{ minHeight:800}}>
                 <View className="flex-row justify-between mx-4">
                     <Text
                     className ="text-[#393F4E] font-semibold text-lg"
@@ -262,7 +306,8 @@ const HomeScreen = ({route}) => {
                 </View>
                 <View
                     className="px-4 mt-4 items-center justify-evenly"
-                >
+                    style={{marginBottom:170}}
+                    >
                     <FlatList
                     className="-mx-4"
                         data={filter}
@@ -272,9 +317,11 @@ const HomeScreen = ({route}) => {
                             return <View
                             style={styleFilter.shadow}>
                                     <ItemCardContainerFilter
-                                    key={item._id} imageSrc={Local1} title={item.event_title} />
+                                    key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
                                 </View>
                         }}
+                        onEndReached={()=>{loadMore()}}
+                        onEndReachedThreshold={0.1}
                     >
                     </FlatList>
                 </View>
