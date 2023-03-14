@@ -5,6 +5,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './HomeScreen';
 import Agencies from './Agencies';
+import Home from './Home';
 
 const TabNavScreens = ({route}) => {
     const navigation = useNavigation();
@@ -66,7 +67,7 @@ const TabNavScreens = ({route}) => {
                 tabBarInactiveTintColor: '#4E73A5',
             })}
         >
-            <Tab.Screen name="Home" component={HomeScreen} initialParams={route.params} />
+            <Tab.Screen name="Home" component={Home} initialParams={route.params} />
             <Tab.Screen name="Noticias" component={Noticias} />
             <Tab.Screen name="Criar" component={Criar} />
             <Tab.Screen name="Salvos" component={Salvos} />

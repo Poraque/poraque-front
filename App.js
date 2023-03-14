@@ -16,7 +16,6 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="TabNavigation" component={TabNavScreens} />
-        <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
       </NavigationContainer>
     </TailwindProvider>
