@@ -4,8 +4,6 @@ import { useNavigation } from '@react-navigation/native'
 import { LogoUser, IconFilter, IconBrilho, IconUser, IconMala, Local1 } from '../assets';
 import MenuContainer from '../components/MenuContainer';
 import ItemCardContainer from '../components/ItemCardContainer';
-import { useBackHandler } from '@react-native-community/hooks';
-import anav from "../assets/local_images/card-igreja.png"
 
 const HomeScreen = ({ route }) => {
 
@@ -25,10 +23,6 @@ const HomeScreen = ({ route }) => {
             setData(route.params.eventsHome);
         }
     }, []);
-
-    useBackHandler(() => {
-        return true;
-    });
 
     return (
         <SafeAreaView className=" bg-white flex-1">
