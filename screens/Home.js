@@ -3,12 +3,12 @@ import React, {useLayoutEffect, useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import AgenciesList from './AgenciesList';
-import AgencyDetails from './AgencyDetails';
+import HomeScreen from './HomeScreen';
+import EventDetails from './EventDetails';
 
 const Stack = createNativeStackNavigator();
 
-const Agencies = () => {
+const Home = ({ route }) => {
 
     const navigation = useNavigation();
 
@@ -21,12 +21,12 @@ const Agencies = () => {
     return (
         <NavigationContainer independent={true}>
           <Stack.Navigator>
-            <Stack.Screen name="AgenciesList" component={AgenciesList} />
-            <Stack.Screen name="AgencyDetails" component={AgencyDetails} />
+            <Stack.Screen name="Home" component={HomeScreen} initialParams={route.params}/>
+            <Stack.Screen name="EventDetails" component={EventDetails} />
           </Stack.Navigator>
         </NavigationContainer>
       );
   
 }
 
-export default Agencies;
+export default Home;

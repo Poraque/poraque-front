@@ -33,3 +33,13 @@ export {default as BarAgenciasSelect} from "./bar-agencias-select.png";
 export {default as Pexe} from "./pexe.png";
 export {default as CoolEmoji} from "./cool.png";
 export {default as HeartEmoji} from "./heart.png";
+
+// Geral icons
+export {default as EmptyHeartIcon} from "./empty-heart.png";
+export {default as FullHeartIcon} from "./full-heart.png";
+export {default as BackIcon} from "./back.png";
+export {default as StarIcon} from "./star.png";
+export {default as ChatIcon} from "./coment.png";
+
+// Diversos
+export {default as AgenciaImg} from "./agencia-generica.jpg";
