@@ -33,7 +33,7 @@ const SplashScreen = () => {
   }, [])
 
   useEffect(()=>{
-    data == undefined ? null : navigation.navigate("TabNavigation",{
+    data == undefined ? null : navigation.navigate("Login",{
       eventsHome: data,
     })
   }, [data])
