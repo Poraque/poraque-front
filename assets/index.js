@@ -40,6 +40,9 @@ export {default as FullHeartIcon} from "./full-heart.png";
 export {default as BackIcon} from "./back.png";
 export {default as StarIcon} from "./star.png";
 export {default as ChatIcon} from "./coment.png";
+export {default as LoginUserIcon} from "./user_icon.png";
+export {default as LoginLockIcon} from "./lock_icon.png";
+export {default as LoginEyeIcon} from "./visible_icon.png";
 
 // Diversos
 export {default as AgenciaImg} from "./agencia-generica.jpg";
