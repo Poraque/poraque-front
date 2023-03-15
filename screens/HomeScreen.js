@@ -14,12 +14,14 @@ const HomeScreen = ({route}) => {
     const api = new API()
     const navigation = useNavigation();
     const [data, setData] = useState([]);
-    const [type, setType] = useState("sujestão");
+    const [type, setType] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [filter, setFilter] = useState(false);
     const [searchText, setSearchText] = useState('');
+    const [searchType, setSearchType] = useState('');
+
+    const [searchLoading, setSearchLoading] = useState(false);
     const [actualPage, setActualPage] = useState(0)
-    const [prevEvents, setPrevEvents] = useState([]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -31,33 +33,29 @@ const HomeScreen = ({route}) => {
         if(searchText){
             const events = await api.searchEvents(searchText, actualPage);
             
-            if(prevEvents && !events.includes(prevEvents[0])){
-                setFilter(events);
-            }
-            setPrevEvents(events);
+            setFilter(events);
+            setSearchLoading(false);        
+            console.log(searchText);
         }
-    }, 800);
+    }, 100);
 
     const loadMore = async ()=>{
         setActualPage(actualPage + 1)
         if(searchText && actualPage != 0){
-            
                         
             const events = await api.searchEvents(searchText, actualPage);
             let newFilter = filter.concat(events)
             
-            
-            
-            if(newFilter.length < 30){
-               setFilter(newFilter);
-            }
         }
     }
 
     const handleSearchTextChange = (text) =>{
         setActualPage(0);
         setSearchText(text);
+        setSearchType('');
+        setSearchLoading(true);        
         delaySearch();
+        
     }
     
 
@@ -68,9 +66,14 @@ const HomeScreen = ({route}) => {
     }, [])
 
     const searchTypeEvents = async (type, start) =>{
+        setSearchType(type);
+        setSearchLoading(true);        
         
         const events = await api.searchTypeEvents(type, start)
-        setFilter([events])
+        
+        setFilter(events)
+        setSearchLoading(false);
+
     }
 
 /*
@@ -86,6 +89,7 @@ const HomeScreen = ({route}) => {
             setFilter(false);
             setActualPage(0);
             setSearchText('');
+            setSearchType('');
             return true;    
         }else{
             BackHandler.exitApp()
@@ -298,13 +302,15 @@ const HomeScreen = ({route}) => {
 
         </ScrollView>
         }
-    {filter ? <View className="mt-6" style={{ minHeight:800}}>
+    {searchText || searchType ? <View className="mt-6" style={{ minHeight:800}}>
                 <View className="flex-row justify-between mx-4">
                     <Text
                     className ="text-[#393F4E] font-semibold text-lg"
-                    >Busca</Text>
+                    >Busca por {searchText || searchType}</Text>
                 </View>
-                <View
+                {searchLoading ? <View className="flex-1 items-center justify-center">
+            <ActivityIndicator size="large" color="#406d87" />
+        </View>: <View
                     className="px-4 mt-4 items-center justify-evenly"
                     style={{marginBottom:170}}
                     >
@@ -325,7 +331,8 @@ const HomeScreen = ({route}) => {
                     >
                     </FlatList>
                 </View>
-            </View>
+            }
+            </View>    
      : null}
     </SafeAreaView>
   )
