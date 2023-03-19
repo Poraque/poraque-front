@@ -14,14 +14,14 @@ export class API{
     }
 
     getEvent = async (id) =>{
-        return await fetch(this.BASEURL+`events/${id}`,{
+        const response = await fetch(this.BASEURL+`event/${id}`,{
             method:"GET",
             header: {
                 'Content-Type': 'application/json'
               }
-        }).then((response)=>{
-            response.json()
         });
+
+        return await response.json();
     }
 
     searchEvents = async (query, page) =>{

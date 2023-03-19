@@ -180,7 +180,7 @@ const HomeScreen = ({route}) => {
                                     return <View
                                         style={styles.shadow}>
                                         <ItemCardContainer
-                                            key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
@@ -217,7 +217,7 @@ const HomeScreen = ({route}) => {
                                     return <View
                                         style={styles.shadow}>
                                         <ItemCardContainer
-                                            key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
@@ -253,7 +253,7 @@ const HomeScreen = ({route}) => {
                                     return <View
                                         style={styles.shadow}>
                                         <ItemCardContainer
-                                            key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
@@ -289,7 +289,7 @@ const HomeScreen = ({route}) => {
                             return <View 
                                     style={styles.shadow}>
                                     <ItemCardContainer
-                                    key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
+                                    key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
                                 </View>
                         }}
                     >
@@ -324,7 +324,7 @@ const HomeScreen = ({route}) => {
                             return <View
                             style={styleFilter.shadow}>
                                     <ItemCardContainerFilter
-                                    key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
+                                    key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
                                 </View>
                         }}
                         onEndReached={()=>{loadMore()}}

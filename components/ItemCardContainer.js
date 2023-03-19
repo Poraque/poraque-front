@@ -5,9 +5,12 @@ import React from 'react'
 
 const ItemCardContainer = ({ id, imageSrc, title, stars, location }) => {
     const navigation = useNavigation();
+    
+    
+ 
     return (
         <TouchableOpacity
-            onPress={({ item }) => { navigation.navigate('EventDetails', { item }) }}
+            onPress={()=>navigation.navigate('EventDetails', { eventId: id, })}
             className="rounded-md space-y-2 px-3 py-3 mx-1"
         >
             <View className="w-[141px] h-[116]">
