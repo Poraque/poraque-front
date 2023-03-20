@@ -17,12 +17,16 @@ const HomeScreen = ({route}) => {
     const [data, setData] = useState([]);
     const [type, setType] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [filter, setFilter] = useState(false);
+    const [filter, setFilter] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [searchType, setSearchType] = useState('');
 
     const [searchLoading, setSearchLoading] = useState(false);
     const [actualPage, setActualPage] = useState(0)
+
+    const [hasMoreData, setHasMoreData] = useState(true);
+    const [moreEventsLoading, setMoreEventsLoading] = useState(false);
+
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -41,26 +45,45 @@ const HomeScreen = ({route}) => {
     }, 100);
 
     const loadMore = async ()=>{
-        setActualPage(actualPage + 1)
-        if(searchText && actualPage != 0){
-                        
-            const events = await api.searchEvents(searchText, actualPage);
-            let newFilter = filter.concat(events)
+        if(filter.length >= 10 && hasMoreData){
+            const newActualPage = actualPage + 1
+            setActualPage(newActualPage);
             
+
+            if(actualPage != 0){
+                setMoreEventsLoading(true);
+                console.log(actualPage);
+                let events = false;
+                if(searchType){
+                    events = await api.searchTypeEvents(searchType, actualPage)
+                }
+                if(searchText){            
+                    events = await api.searchEvents(searchText, actualPage);
+                }
+                events ? setMoreEventsLoading(false) : null; 
+                if(events.length > 0){
+                    let newFilter = filter.concat(events)
+                    console.log(newFilter);
+                    setFilter(newFilter);
+                }else{
+                    setHasMoreData(false);
+                }
+            }
         }
+    
     }
 
     const handleSearchTextChange = (text) =>{
         setActualPage(0);
         setSearchText(text);
         setSearchType('');
-        setSearchLoading(true);        
+        setSearchLoading(true);
+        setMoreEventsLoading(false);
+        setHasMoreData(true);
         delaySearch();
         
     }
     
-    
-
     useEffect(() => {
         if (route.params) {
             setData(route.params.eventsHome);
@@ -70,6 +93,7 @@ const HomeScreen = ({route}) => {
     const searchTypeEvents = async (type, start) =>{
         setSearchType(type);
         setSearchLoading(true);        
+        setHasMoreData(true);
         
         const events = await api.searchTypeEvents(type, start)
         
@@ -88,10 +112,13 @@ const HomeScreen = ({route}) => {
 */
     useBackHandler(() => {
         if(filter){
-            setFilter(false);
+            setFilter([]);
             setActualPage(0);
             setSearchText('');
             setSearchType('');
+            setSearchLoading(false);
+            setMoreEventsLoading(false);
+            setHasMoreData(true);
             return true;    
         }else{
             BackHandler.exitApp()
@@ -113,6 +140,8 @@ const HomeScreen = ({route}) => {
                     bg-[#EEEFF0] mx-4
                     rounded-xl py-1
                     px4 shadow-lg"
+                    onChangeText={(text)=>handleSearchTextChange(text)}
+                    value={searchText}
                 />
                 <Image
                     source={IconFilter}
@@ -297,10 +326,6 @@ const HomeScreen = ({route}) => {
                 </View>
             </View>
             
-
-            
-            
-
         </ScrollView>
         }
     {searchText || searchType ? <View className="mt-6" style={{ minHeight:800}}>
@@ -331,6 +356,8 @@ const HomeScreen = ({route}) => {
                         onEndReachedThreshold={0.1}
                     >
                     </FlatList>
+                    {moreEventsLoading &&
+                    <ActivityIndicator style={{ marginTop: 10 }} size="large" color="#406d87" />}
                 </View>
             }
             </View>    
