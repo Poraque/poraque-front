@@ -7,7 +7,8 @@ const ItemCardContainerFilter = ({id, imageSrc, title, stars, location}) => {
     const navigation = useNavigation();
   return (
     <TouchableOpacity
-        className="rounded-md space-y-2 px-3 py-3 mx-1"
+        onPress={()=>navigation.navigate('EventDetails', { eventId: id, })}
+        className="rounded-md space-y-2 px-3 py-3 mx-1"    
     >
         <View> 
             <Image
