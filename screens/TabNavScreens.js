@@ -51,10 +51,6 @@ const TabNavScreens = ({route}) => {
 
                     if(route.name == 'Home') {
                         iconName = 'home'
-                    } else if(route.name == 'Noticias') {
-                        iconName = 'md-calendar';
-                    } else if(route.name == 'Criar') {
-                        iconName = 'add-circle';
                     } else if(route.name == 'Salvos') {
                         iconName = 'heart';
                     } else if(route.name == 'Agencias') {
@@ -68,8 +64,6 @@ const TabNavScreens = ({route}) => {
             })}
         >
             <Tab.Screen name="Home" component={Home} initialParams={route.params} />
-            <Tab.Screen name="Noticias" component={Noticias} />
-            <Tab.Screen name="Criar" component={Criar} />
             <Tab.Screen name="Salvos" component={Salvos} />
             <Tab.Screen name="Agencias" component={Agencies} />
         </Tab.Navigator>
