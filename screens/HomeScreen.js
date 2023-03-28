@@ -46,7 +46,7 @@ const HomeScreen = ({ route }) => {
                     <ActivityIndicator size="large" color="#406d87" />
                 </View>
                 :
-                <ScrollView className="pb-6">
+                <ScrollView className="pb-6" nestedScrollEnabled={true}>
                     {/* -------------------- Pontos Turísticos ------------------------- */}
                     <View className="mt-6">
                         <View className="flex-row justify-between mx-4">
@@ -64,12 +64,13 @@ const HomeScreen = ({ route }) => {
                         >
                             <FlatList
                                 className="-mx-4"
+                                nestedScrollEnabled={true}
+                                contentContainerStyle={styles.flatlistCards}
                                 data={data.filter((event) => {
                                     return event.event_type === "Hotel";
                                 })}
+                                numColumns={2}
                                 keyExtractor={(item) => String(item._id)}
-                                showsHorizontalScrollIndicator={false}
-                                horizontal
                                 renderItem={({ item }) => {
                                     return <View
                                         style={styles.shadow}>
@@ -100,12 +101,13 @@ const HomeScreen = ({ route }) => {
                         >
                             <FlatList
                                 className="-mx-4"
+                                nestedScrollEnabled={true}
+                                contentContainerStyle={styles.flatlistCards}
                                 data={data.filter((event) => {
                                     return event.event_type === "Hotel";
                                 })}
+                                numColumns={2}
                                 keyExtractor={(item) => String(item._id)}
-                                showsHorizontalScrollIndicator={false}
-                                horizontal
                                 renderItem={({ item }) => {
                                     return <View
                                         style={styles.shadow}>
@@ -122,7 +124,7 @@ const HomeScreen = ({ route }) => {
                     <View className="mt-6">
                         <View className="flex-row justify-between mx-4">
                             <Text
-                                className="text-[#393F4E] font-semibold text-lg"
+                                className="font-semibold text-lg"
                             >Locais para comer</Text>
                             <TouchableOpacity>
                                 <Text
@@ -130,20 +132,18 @@ const HomeScreen = ({ route }) => {
                                 >{'Ver mais >'}</Text>
                             </TouchableOpacity>
                         </View>
-                        <View
-                            className="px-4 mt-4 flex-row items-center justify-evenly flex-wrap"
-                        >
+                        <View>
                             <FlatList
-                                className="-mx-4"
+                                className="mt-6 mx-2"
+                                nestedScrollEnabled={true}
+                                contentContainerStyle={styles.flatlistCards}
                                 data={data.filter((event) => {
                                     return event.event_type === "Festival";
                                 })}
+                                numColumns={2}
                                 keyExtractor={(item) => String(item._id)}
-                                showsHorizontalScrollIndicator={false}
-                                horizontal
                                 renderItem={({ item }) => {
-                                    return <View
-                                        style={styles.shadow}>
+                                    return <View>
                                         <ItemCardContainer
                                             key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
@@ -170,6 +170,9 @@ const styles = StyleSheet.create({
         shadowRadius: 2.22,
 
         elevation: 3,
+    },
+    flatlistCards: {
+        alignItems: 'flex-start'
     }
 })
 
