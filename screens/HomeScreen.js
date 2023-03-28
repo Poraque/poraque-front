@@ -118,12 +118,12 @@ const HomeScreen = ({ route }) => {
                         </View>
                     </View>
 
-                    {/* -------------------- Festivais ------------------------- */}
+                    {/* -------------------- Locais para comer ------------------------- */}
                     <View className="mt-6">
                         <View className="flex-row justify-between mx-4">
                             <Text
                                 className="text-[#393F4E] font-semibold text-lg"
-                            >Festivais</Text>
+                            >Locais para comer</Text>
                             <TouchableOpacity>
                                 <Text
                                     className="text-[#277AFF]"
@@ -137,41 +137,6 @@ const HomeScreen = ({ route }) => {
                                 className="-mx-4"
                                 data={data.filter((event) => {
                                     return event.event_type === "Festival";
-                                })}
-                                keyExtractor={(item) => String(item._id)}
-                                showsHorizontalScrollIndicator={false}
-                                horizontal
-                                renderItem={({ item }) => {
-                                    return <View
-                                        style={styles.shadow}>
-                                        <ItemCardContainer
-                                            key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
-                                    </View>
-                                }}
-                            >
-                            </FlatList>
-                        </View>
-                    </View>
-
-                    {/* -------------------- Feiras ------------------------- */}
-                    <View className="mt-6">
-                        <View className="flex-row justify-between mx-4">
-                            <Text
-                                className="text-[#393F4E] font-semibold text-lg"
-                            >Feiras</Text>
-                            <TouchableOpacity>
-                                <Text
-                                    className="text-[#277AFF]"
-                                >{'Ver mais >'}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View
-                            className="px-4 mt-4 flex-row items-center justify-evenly flex-wrap"
-                        >
-                            <FlatList
-                                className="-mx-4"
-                                data={data.filter((event) => {
-                                    return event.event_type === "Feira";
                                 })}
                                 keyExtractor={(item) => String(item._id)}
                                 showsHorizontalScrollIndicator={false}
