@@ -1,8 +1,7 @@
 import { View, ActivityIndicator, Text, ScrollView, StyleSheet, FlatList, SafeAreaView, Image, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { IconSearch, IconBrilho, IconUser, IconMala, Local1 } from '../assets';
-import MenuContainer from '../components/MenuContainer';
+import { IconSearch, Local1 } from '../assets';
 import ItemCardContainer from '../components/ItemCardContainer';
 
 const HomeScreen = ({ route }) => {

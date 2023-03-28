@@ -3,9 +3,9 @@ import React, { useLayoutEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import HomeScreen from './HomeScreen';
 import Agencies from './Agencies';
 import Home from './Home';
+import SaveScreen from './SaveScreen';
 
 const TabNavScreens = ({route}) => {
     const navigation = useNavigation();
@@ -15,30 +15,6 @@ const TabNavScreens = ({route}) => {
         headerShown: false,
         })
     }, [])
-
-    function Noticias() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Notícias</Text>
-        </View>
-    );
-    }
-
-    function Criar() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Criar</Text>
-        </View>
-    );
-    }
-
-    function Salvos() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Salvos</Text>
-        </View>
-    );
-    }
 
   const Tab = createBottomTabNavigator();
 
@@ -64,7 +40,7 @@ const TabNavScreens = ({route}) => {
             })}
         >
             <Tab.Screen name="Home" component={Home} initialParams={route.params} />
-            <Tab.Screen name="Salvos" component={Salvos} />
+            <Tab.Screen name="Salvos" component={SaveScreen} />
             <Tab.Screen name="Agencias" component={Agencies} />
         </Tab.Navigator>
     </NavigationContainer>
