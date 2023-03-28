@@ -9,7 +9,6 @@ const HomeScreen = ({ route }) => {
 
     const navigation = useNavigation();
     const [data, setData] = useState([]);
-    const [type, setType] = useState("sujestão");
     const [isLoading, setIsLoading] = useState(false);
 
     useLayoutEffect(() => {
@@ -26,7 +25,7 @@ const HomeScreen = ({ route }) => {
 
     return (
         <SafeAreaView className=" bg-white flex-1">
-            <View className="relative flex-row items-center rounded-lg justify-center mt-10 mx-4 mb-2 bg-[#EEEFF0]">
+            <View className="relative flex-row items-center rounded-lg justify-center mt-10 mx-4 mb-4 bg-[#EEEFF0]">
                 <Image
                     source={IconSearch}
                     className="
@@ -48,31 +47,7 @@ const HomeScreen = ({ route }) => {
                     <ActivityIndicator size="large" color="#406d87" />
                 </View>
                 :
-                <ScrollView>
-                    <View className="flex-row items-center justify-around mt-4">
-                        <MenuContainer
-                            key={"sugestao"}
-                            title="Sugestão"
-                            imageSrc={IconBrilho}
-                            type={type}
-                            setType={setType}
-                        />
-                        <MenuContainer
-                            key={"popular"}
-                            title="Popular"
-                            imageSrc={IconUser}
-                            type={type}
-                            setType={setType}
-                        />
-                        <MenuContainer
-                            key={"agencias"}
-                            title="Agências"
-                            imageSrc={IconMala}
-                            type={type}
-                            setType={setType}
-                        />
-                    </View>
-
+                <ScrollView className="pb-6">
                     {/* -------------------- Pontos Turísticos ------------------------- */}
                     <View className="mt-6">
                         <View className="flex-row justify-between mx-4">
