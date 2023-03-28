@@ -5,7 +5,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Agencies from './Agencies';
 import Home from './Home';
-import SaveScreen from './SaveScreen';
+import Save from './Save';
 
 const TabNavScreens = ({route}) => {
     const navigation = useNavigation();
@@ -40,7 +40,7 @@ const TabNavScreens = ({route}) => {
             })}
         >
             <Tab.Screen name="Home" component={Home} initialParams={route.params} />
-            <Tab.Screen name="Salvos" component={SaveScreen} />
+            <Tab.Screen name="Salvos" component={Save} />
             <Tab.Screen name="Agencias" component={Agencies} />
         </Tab.Navigator>
     </NavigationContainer>

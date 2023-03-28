@@ -16,7 +16,7 @@ export default function SaveScreen() {
 
   return (
     <SafeAreaView className=" bg-white flex-1">
-        <View className="relative flex-row items-center rounded-lg justify-center mt-10 mx-4 mb-4 bg-[#EEEFF0]">
+        <View className="relative flex-row items-center rounded-lg justify-center mt-10 mx-4 bg-[#EEEFF0]">
             <Image
                 source={IconSearch}
                 className="
@@ -32,7 +32,7 @@ export default function SaveScreen() {
             />
         </View>
 
-        <Text className="text-[#393F4E] font-semibold text-[35px] ml-4 my-6">Salvos</Text>
+        <Text className="text-[#393F4E] font-semibold text-[30px] ml-4 my-4">Salvos</Text>
 
         <ScrollView>
             <SaveCardContainer
@@ -41,12 +41,12 @@ export default function SaveScreen() {
             location={'Rua Beco Francisco Cardoso Nossa Senhora Auxiliadora, Novo Airão'}/>
             <SaveCardContainer
             imageSrc={Local6}
-            title={'Mirante do Gavião'}
-            location={'Rua Beco Francisco Cardoso Nossa Senhora Auxiliadora, Novo Airão'}/>
+            title={'Amazônia Experience Lodge'}
+            location={'Rua Adalberto vale'}/>
             <SaveCardContainer
             imageSrc={Local3}
-            title={'Mirante do Gavião'}
-            location={'Rua Beco Francisco Cardoso Nossa Senhora Auxiliadora, Novo Airão'}/>
+            title={'Poraquê Sede'}
+            location={'Av. Djalma alguma coisa'}/>
             <SaveCardContainer
             imageSrc={Local4}
             title={'Mirante do Gavião'}
