@@ -8,7 +8,7 @@ const ItemCardContainer = ({ id, imageSrc, title, stars, location }) => {
     return (
         <TouchableOpacity
             onPress={() => { navigation.navigate('EventDetails', { title, imageSrc, location }) }}
-            className="rounded-md space-y-2 px-3 py-3 mx-1"
+            className="rounded-md space-y-2 px-3 py-3 mx-1 w-full"
         >
             <View className="w-[141px] h-[116]">
                 <Image
