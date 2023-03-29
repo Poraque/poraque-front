@@ -1,14 +1,30 @@
-import { View, ActivityIndicator, Text, ScrollView, StyleSheet, FlatList, SafeAreaView, Image, TextInput, TouchableOpacity } from 'react-native'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { View, ActivityIndicator, Text, ScrollView, StyleSheet, FlatList, SafeAreaView, Image, TextInput, TouchableOpacity, BackHandler } from 'react-native'
+import React, { useEffect, useLayoutEffect, useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { IconSearch, Local1 } from '../assets';
+import { BackIcon, IconSearch, Local1 } from '../assets';
 import ItemCardContainer from '../components/ItemCardContainer';
+import ItemCardContainerFilter from '../components/ItemCardContainerFilter';
+import { API } from '../api/api';
+import { useBackHandler } from '@react-native-community/hooks';
+import _ from 'lodash';
+import anav from "../assets/local_images/card-igreja.png"
 
-const HomeScreen = ({ route }) => {
-
+const HomeScreen = ({route}) => {
+    const api = new API()
     const navigation = useNavigation();
     const [data, setData] = useState([]);
+    const [type, setType] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [filter, setFilter] = useState([]);
+    const [searchText, setSearchText] = useState('');
+    const [searchType, setSearchType] = useState('');
+
+    const [searchLoading, setSearchLoading] = useState(false);
+    const [actualPage, setActualPage] = useState(0)
+
+    const [hasMoreData, setHasMoreData] = useState(true);
+    const [moreEventsLoading, setMoreEventsLoading] = useState(false);
+
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -16,11 +32,96 @@ const HomeScreen = ({ route }) => {
         })
     }, []);
 
+    const delaySearch = _.debounce( async (text)=>{
+        if(searchText){
+            const events = await api.searchEvents(searchText, actualPage);
+            
+            setFilter(events);
+            setSearchLoading(false);        
+            console.log(searchText);
+        }
+    }, 100);
+
+    const loadMore = async ()=>{
+        if(filter.length >= 10 && hasMoreData){
+            const newActualPage = actualPage + 1
+            setActualPage(newActualPage);
+            
+
+            if(actualPage != 0){
+                setMoreEventsLoading(true);
+                console.log(actualPage);
+                let events = false;
+                if(searchType){
+                    events = await api.searchTypeEvents(searchType, actualPage)
+                }
+                if(searchText){            
+                    events = await api.searchEvents(searchText, actualPage);
+                }
+                events ? setMoreEventsLoading(false) : null; 
+                if(events.length > 0){
+                    let newFilter = filter.concat(events)
+                    setFilter(newFilter);
+                }else{
+                    setHasMoreData(false);
+                }
+            }
+        }
+    
+    }
+
+    const handleSearchTextChange = (text) =>{
+        setActualPage(0);
+        setSearchText(text);
+        setSearchType('');
+        setSearchLoading(true);
+        setMoreEventsLoading(false);
+        setHasMoreData(true);
+        delaySearch();
+        
+    }
+    
     useEffect(() => {
         if (route.params) {
             setData(route.params.eventsHome);
         }
+    }, [])
+
+    const searchTypeEvents = async (type, start) =>{
+        setSearchType(type);
+        setSearchLoading(true);        
+        setHasMoreData(true);
+        
+        const events = await api.searchTypeEvents(type, start)
+        
+        setFilter(events)
+        setSearchLoading(false);
+
+    }
+
+/*
+    useEffect(() => {
+        setIsLoading(true);
+        getData().then(() => {
+            setIsLoading(false);
+        });
     }, []);
+*/
+    useBackHandler(() => {
+        if(filter){
+            setFilter([]);
+            setActualPage(0);
+            setSearchText('');
+            setSearchType('');
+            setSearchLoading(false);
+            setMoreEventsLoading(false);
+            setHasMoreData(true);
+            return true;    
+        }else{
+            BackHandler.exitApp()
+            return false;
+        }
+    });
 
     return (
         <SafeAreaView className=" bg-white flex-1">
@@ -52,11 +153,16 @@ const HomeScreen = ({ route }) => {
                         <View className="flex-row justify-between mx-4">
                             <Text
                                 className="text-[#393F4E] font-semibold text-lg"
-                            >Pontos Turísticos</Text>
-                            <TouchableOpacity>
+                            >
+                                Pontos Turísticos
+                            </Text>
+                            <TouchableOpacity 
+                            onPress={() => searchTypeEvents("Turistico", 0)}
+                            >
                                 <Text
-                                    className="text-[#277AFF]"
-                                >{'Ver mais >'}</Text>
+                                    className="text-[#277AFF]">
+                                    {'Ver mais >'}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                         <View
@@ -67,7 +173,7 @@ const HomeScreen = ({ route }) => {
                                 nestedScrollEnabled={true}
                                 contentContainerStyle={styles.flatlistCards}
                                 data={data.filter((event) => {
-                                    return event.event_type === "Hotel";
+                                    return event.event_type === "Turistico";
                                 })}
                                 numColumns={2}
                                 keyExtractor={(item) => String(item._id)}
@@ -75,7 +181,7 @@ const HomeScreen = ({ route }) => {
                                     return <View
                                         style={styles.shadow}>
                                         <ItemCardContainer
-                                            key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
@@ -87,13 +193,17 @@ const HomeScreen = ({ route }) => {
                     <View className="mt-6">
                         <View className="flex-row justify-between mx-4">
                             <Text
-                                className="text-[#393F4E] font-semibold text-lg"
-                            >Hotéis</Text>
+                                className="text-[#393F4E] font-semibold text-lg">
+                                    Hotéis
+                            </Text>
                             <TouchableOpacity                            
-                            >
+                            
+                                onPress={() => searchTypeEvents("Hotel", 0)}>
                                 <Text
                                     className="text-[#277AFF]"
-                                >{'Ver mais >'}</Text>
+                                >
+                                    {'Ver mais >'}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                         <View
@@ -112,7 +222,7 @@ const HomeScreen = ({ route }) => {
                                     return <View
                                         style={styles.shadow}>
                                         <ItemCardContainer
-                                            key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
@@ -125,11 +235,18 @@ const HomeScreen = ({ route }) => {
                         <View className="flex-row justify-between mx-4">
                             <Text
                                 className="font-semibold text-lg"
-                            >Locais para comer</Text>
-                            <TouchableOpacity>
+                            >
+                                Locais para comer
+                            </Text>
+                            <TouchableOpacity
+                            onPress={() => searchTypeEvents("Feira", 0)}
+                            >
                                 <Text
                                     className="text-[#277AFF]"
-                                >{'Ver mais >'}</Text>
+                                >
+                                    {'Ver mais >'}
+                                </Text>
+                                
                             </TouchableOpacity>
                         </View>
                         <View>
@@ -138,14 +255,14 @@ const HomeScreen = ({ route }) => {
                                 nestedScrollEnabled={true}
                                 contentContainerStyle={styles.flatlistCards}
                                 data={data.filter((event) => {
-                                    return event.event_type === "Festival";
+                                    return event.event_type === "Feira";
                                 })}
                                 numColumns={2}
                                 keyExtractor={(item) => String(item._id)}
                                 renderItem={({ item }) => {
                                     return <View>
                                         <ItemCardContainer
-                                            key={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
@@ -154,10 +271,52 @@ const HomeScreen = ({ route }) => {
                     </View>
                 </ScrollView>
             }
-
-        </SafeAreaView>
-    )
+ {searchText || searchType ? <View className="mt-6" style={{ minHeight:800}}>
+                <View className="flex-row mx-4">
+                <TouchableOpacity onPress={() => setSearchType(false)}>
+                <Image
+                    source={BackIcon}
+                    className="w-5 h-5 object-cover" style={styles.iconBack}
+                />
+                </TouchableOpacity>
+                    <Text
+                    className ="text-[#393F4E] font-semibold text-lg"
+                    >Busca por {searchText || (searchType == "Feira" ? "Locais para comer" : searchType)}</Text>
+                </View>
+                {searchLoading ? <View className="flex-1 items-center justify-center">
+            <ActivityIndicator size="large" color="#406d87" />
+        </View>: <View
+                    className="px-4 mt-4 items-center justify-evenly"
+                    style={{marginBottom:10}}
+                    >
+                    <FlatList
+                    className="-mx-4"
+                    numColumns={2}
+                    columnWrapperStyle={{justifyContent: 'space-between', marginLeft: 10, marginRight: 10}}
+                        data={filter}
+                        keyExtractor={(item) => String(item._id)}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({item}) => {
+                            return <View
+                            style={styleFilter.shadow}>
+                                    <ItemCardContainerFilter
+                                    key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
+                                </View>
+                        }}
+                        onEndReached={()=>{loadMore()}}
+                        onEndReachedThreshold={0.1}
+                    >
+                    </FlatList>
+                    {moreEventsLoading &&
+                    <ActivityIndicator style={{ marginTop: 10 }} size="large" color="#406d87" />}
+                </View>
+            }
+            </View>    
+     : null}
+    </SafeAreaView>
+  )
 }
+
 
 const styles = StyleSheet.create({
     shadow: {
@@ -173,6 +332,23 @@ const styles = StyleSheet.create({
     },
     flatlistCards: {
         alignItems: 'flex-start'
+    },
+    iconBack: {
+        margin: 5
+    }
+})
+
+const styleFilter = StyleSheet.create({
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
     }
 })
 
