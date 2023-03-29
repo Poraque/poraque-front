@@ -6,7 +6,6 @@ import MenuContainer from '../components/MenuContainer';
 import ItemCardContainer from '../components/ItemCardContainer';
 import ItemCardContainerFilter from '../components/ItemCardContainerFilter';
 import { API } from '../api/api';
-
 import { useBackHandler } from '@react-native-community/hooks';
 import _ from 'lodash';
 import anav from "../assets/local_images/card-igreja.png"
@@ -63,7 +62,6 @@ const HomeScreen = ({route}) => {
                 events ? setMoreEventsLoading(false) : null; 
                 if(events.length > 0){
                     let newFilter = filter.concat(events)
-                    console.log(newFilter);
                     setFilter(newFilter);
                 }else{
                     setHasMoreData(false);
@@ -200,7 +198,7 @@ const HomeScreen = ({route}) => {
                             <FlatList
                                 className="-mx-4"
                                 data={data.filter((event) => {
-                                    return event.event_type === "Hotel";
+                                    return event.event_type === "Turistico";
                                 })}
                                 keyExtractor={(item) => String(item._id)}
                                 showsHorizontalScrollIndicator={false}
@@ -209,7 +207,7 @@ const HomeScreen = ({route}) => {
                                     return <View
                                         style={styles.shadow}>
                                         <ItemCardContainer
-                                            key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
@@ -246,7 +244,7 @@ const HomeScreen = ({route}) => {
                                     return <View
                                         style={styles.shadow}>
                                         <ItemCardContainer
-                                            key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
@@ -282,7 +280,7 @@ const HomeScreen = ({route}) => {
                                     return <View
                                         style={styles.shadow}>
                                         <ItemCardContainer
-                                            key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
@@ -318,7 +316,7 @@ const HomeScreen = ({route}) => {
                             return <View 
                                     style={styles.shadow}>
                                     <ItemCardContainer
-                                    key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
+                                    key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
                                 </View>
                         }}
                     >
@@ -349,7 +347,7 @@ const HomeScreen = ({route}) => {
                             return <View
                             style={styleFilter.shadow}>
                                     <ItemCardContainerFilter
-                                    key={item._id} id={item._id} imageSrc={Local1} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
+                                    key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
                                 </View>
                         }}
                         onEndReached={()=>{loadMore()}}

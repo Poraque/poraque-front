@@ -4,6 +4,7 @@ import { BackIcon, FullHeartIcon, EmptyHeartIcon, AgenciaImg, StarIcon, ChatIcon
 import { useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { API } from '../api/api';
+import { Buffer } from 'buffer';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,8 @@ const EventDetails = ({route}) => {
 
 
     const [data, setData] = useState(undefined);
+    const [image, setImage] = useState(Local1);
+
     // const [isLoading, setIsLoading] = useState(true);
     
     useEffect(()=>{
@@ -27,7 +30,13 @@ const EventDetails = ({route}) => {
       const getEventDetails = async () =>{
           const event = await api.getEvent(route.params.eventId);
           setData(event);
-      }
+          try{
+            const base64 = Buffer.from(await event.event_img.data.data).toString('base64');
+            setImage({uri:`data:image/jpeg;base64,${base64}`});
+          }catch(err){
+          
+          }
+        }
       getEventDetails();    
     },[])
 
@@ -48,7 +57,7 @@ const EventDetails = ({route}) => {
                 </TouchableOpacity>
             </View>
             <View>
-                <Image style={styles.image} source={Local1}/>
+                <Image style={styles.image} source={image} />
                 <Text style={styles.title}>{data ? data.event_title : null}</Text>
                 <Text style={styles.adress}>
                     {data ? data.event_local: null}

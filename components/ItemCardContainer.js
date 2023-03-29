@@ -1,13 +1,31 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { IconStar, IconGps } from '../assets';
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, {  useState, useEffect } from 'react'
+import { Buffer } from 'buffer';
+import { Local1 } from '../assets';
+
 
 const ItemCardContainer = ({ id, imageSrc, title, stars, location }) => {
     const navigation = useNavigation();
-    
-    
- 
+    const [image, setImage] = useState(Local1);
+
+
+    useEffect(()=>{
+        const getImage = async () =>{
+            if( typeof imageSrc != "object"){
+                return
+            }
+            try{
+              const base64 = Buffer.from(await imageSrc.data.data).toString('base64');
+              setImage({uri:`data:image/jpeg;base64,${base64}`});
+            }catch(err){
+              setImage(Local1);
+            }
+          }
+        getImage();
+    },[])
+
     return (
         <TouchableOpacity
             onPress={()=>navigation.navigate('EventDetails', { eventId: id, })}
@@ -15,7 +33,7 @@ const ItemCardContainer = ({ id, imageSrc, title, stars, location }) => {
         >
             <View className="w-[141px] h-[116]">
                 <Image
-                    source={imageSrc}
+                    source={image}
                     className="w-36 h-32 rounded-md object-cover"
                 />
             </View>
