@@ -1,8 +1,7 @@
 import { View, ActivityIndicator, Text, ScrollView, StyleSheet, FlatList, SafeAreaView, Image, TextInput, TouchableOpacity, BackHandler } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { LogoUser, IconFilter, IconBrilho, IconUser, IconMala, Local1 } from '../assets';
-import MenuContainer from '../components/MenuContainer';
+import { IconSearch, Local1 } from '../assets';
 import ItemCardContainer from '../components/ItemCardContainer';
 import ItemCardContainerFilter from '../components/ItemCardContainerFilter';
 import { API } from '../api/api';
@@ -126,24 +125,19 @@ const HomeScreen = ({route}) => {
 
     return (
         <SafeAreaView className=" bg-white flex-1">
-            <View className=" flex-row items-center justify-center mt-10 mb-2">
+            <View className="relative flex-row items-center rounded-lg justify-center mt-10 mx-4 mb-4 bg-[#EEEFF0]">
                 <Image
-                    source={LogoUser}
-                    className="w-6 h-6 object-cover"
+                    source={IconSearch}
+                    className="
+                    w-4 h-4 rounded-md 
+                    object-cover ml-4"
                 />
                 <TextInput
                     className="
                     w-60
-                    flex-row items-center
-                    bg-[#EEEFF0] mx-4
-                    rounded-xl py-1
-                    px4 shadow-lg"
-                    onChangeText={(text)=>handleSearchTextChange(text)}
-                    value={searchText}
-                />
-                <Image
-                    source={IconFilter}
-                    className="w-4 h-4 object-cover"
+                    flex-1 items-center py-1 px-4
+                    px4 shadow-xl"
+                    placeholder='Pesquisar'
                 />
             </View>
 
@@ -153,43 +147,22 @@ const HomeScreen = ({route}) => {
                     <ActivityIndicator size="large" color="#406d87" />
                 </View>
                 :
-                <ScrollView>
-                    <View className="flex-row items-center justify-around mt-4">
-                        <MenuContainer
-                            key={"sugestao"}
-                            title="Sugestão"
-                            imageSrc={IconBrilho}
-                            type={type}
-                            setType={setType}
-                        />
-                        <MenuContainer
-                            key={"popular"}
-                            title="Popular"
-                            imageSrc={IconUser}
-                            type={type}
-                            setType={setType}
-                        />
-                        <MenuContainer
-                            key={"agencias"}
-                            title="Agências"
-                            imageSrc={IconMala}
-                            type={type}
-                            setType={setType}
-                        />
-                    </View>
-
+                <ScrollView className="pb-6" nestedScrollEnabled={true}>
                     {/* -------------------- Pontos Turísticos ------------------------- */}
                     <View className="mt-6">
                         <View className="flex-row justify-between mx-4">
                             <Text
                                 className="text-[#393F4E] font-semibold text-lg"
-                            >Pontos Turísticos</Text>
+                            >
+                                Pontos Turísticos
+                            </Text>
                             <TouchableOpacity 
-                    onPress={() => searchTypeEvents("Turistico", 0)}
-                    >
+                            onPress={() => searchTypeEvents("Turistico", 0)}
+                            >
                                 <Text
-                                    className="text-[#277AFF]"
-                                >{'Ver mais >'}</Text>
+                                    className="text-[#277AFF]">
+                                    {'Ver mais >'}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                         <View
@@ -197,12 +170,13 @@ const HomeScreen = ({route}) => {
                         >
                             <FlatList
                                 className="-mx-4"
+                                nestedScrollEnabled={true}
+                                contentContainerStyle={styles.flatlistCards}
                                 data={data.filter((event) => {
                                     return event.event_type === "Turistico";
                                 })}
+                                numColumns={2}
                                 keyExtractor={(item) => String(item._id)}
-                                showsHorizontalScrollIndicator={false}
-                                horizontal
                                 renderItem={({ item }) => {
                                     return <View
                                         style={styles.shadow}>
@@ -219,14 +193,17 @@ const HomeScreen = ({route}) => {
                     <View className="mt-6">
                         <View className="flex-row justify-between mx-4">
                             <Text
-                                className="text-[#393F4E] font-semibold text-lg"
-                            >Hotéis</Text>
+                                className="text-[#393F4E] font-semibold text-lg">
+                                    Hotéis
+                            </Text>
                             <TouchableOpacity                            
                             
-                    onPress={() => searchTypeEvents("Hotel", 0)}>
+                                onPress={() => searchTypeEvents("Hotel", 0)}>
                                 <Text
                                     className="text-[#277AFF]"
-                                >{'Ver mais >'}</Text>
+                                >
+                                    {'Ver mais >'}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                         <View
@@ -234,12 +211,13 @@ const HomeScreen = ({route}) => {
                         >
                             <FlatList
                                 className="-mx-4"
+                                nestedScrollEnabled={true}
+                                contentContainerStyle={styles.flatlistCards}
                                 data={data.filter((event) => {
                                     return event.event_type === "Hotel";
                                 })}
+                                numColumns={2}
                                 keyExtractor={(item) => String(item._id)}
-                                showsHorizontalScrollIndicator={false}
-                                horizontal
                                 renderItem={({ item }) => {
                                     return <View
                                         style={styles.shadow}>
@@ -252,85 +230,52 @@ const HomeScreen = ({route}) => {
                         </View>
                     </View>
 
-                    {/* -------------------- Festivais ------------------------- */}
+                    {/* -------------------- Locais para comer ------------------------- */}
                     <View className="mt-6">
                         <View className="flex-row justify-between mx-4">
                             <Text
-                                className="text-[#393F4E] font-semibold text-lg"
-                            >Festivais</Text>
+                                className="font-semibold text-lg"
+                            >
+                                Locais para comer
+                            </Text>
                             <TouchableOpacity
-                    onPress={() => searchTypeEvents("Festival", 0)}>
+                            onPress={() => searchTypeEvents("Feira", 0)}
+                            >
                                 <Text
                                     className="text-[#277AFF]"
-                                >{'Ver mais >'}</Text>
+                                >
+                                    {'Ver mais >'}
+                                </Text>
+                                
                             </TouchableOpacity>
                         </View>
-                        <View
-                            className="px-4 mt-4 flex-row items-center justify-evenly flex-wrap"
-                        >
+                        <View>
                             <FlatList
-                                className="-mx-4"
+                                className="mt-6 mx-2"
+                                nestedScrollEnabled={true}
+                                contentContainerStyle={styles.flatlistCards}
                                 data={data.filter((event) => {
-                                    return event.event_type === "Festival";
+                                    return event.event_type === "Feira";
                                 })}
+                                numColumns={2}
                                 keyExtractor={(item) => String(item._id)}
-                                showsHorizontalScrollIndicator={false}
-                                horizontal
                                 renderItem={({ item }) => {
-                                    return <View
-                                        style={styles.shadow}>
+                                    return <View>
                                         <ItemCardContainer
-                                            key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local} />
+                                            key={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local} />
                                     </View>
                                 }}
                             >
                             </FlatList>
                         </View>
                     </View>
-
-            {/* -------------------- Feiras ------------------------- */}
-            <View className="mt-6">
+                </ScrollView>
+            }
+ {searchText || searchType ? <View className="mt-6" style={{ minHeight:800}}>
                 <View className="flex-row justify-between mx-4">
                     <Text
                     className ="text-[#393F4E] font-semibold text-lg"
-                    >Feiras</Text>
-                    <TouchableOpacity
-                    onPress={() => searchTypeEvents("Feira", 0)}>
-                        <Text
-                        className="text-[#277AFF]"
-                        >{'Ver mais >'}</Text>
-                    </TouchableOpacity>
-                </View>
-                <View
-                    className="px-4 mt-4 flex-row items-center justify-evenly flex-wrap"
-                >
-                    <FlatList
-                    className="-mx-4"
-                        data={data.filter((event)=>{
-                            return  event.event_type === "Feira";
-                        })}
-                        keyExtractor={(item) => String(item._id)}
-                        showsHorizontalScrollIndicator={false}
-                        horizontal
-                        renderItem={({item}) => {
-                            return <View 
-                                    style={styles.shadow}>
-                                    <ItemCardContainer
-                                    key={item._id} id={item._id} imageSrc={item.event_img} title={item.event_title} stars={item.event_stars} location={item.event_local}/>
-                                </View>
-                        }}
-                    >
-                    </FlatList>
-                </View>
-            </View>
-            
-        </ScrollView>
-        }
-    {searchText || searchType ? <View className="mt-6" style={{ minHeight:800}}>
-                <View className="flex-row justify-between mx-4">
-                    <Text
-                    className ="text-[#393F4E] font-semibold text-lg"
-                    >Busca por {searchText || searchType}</Text>
+                    >Busca por {searchText || (searchType == "Feira" ? "Locais para comer" : searchType)}</Text>
                 </View>
                 {searchLoading ? <View className="flex-1 items-center justify-center">
             <ActivityIndicator size="large" color="#406d87" />
@@ -364,6 +309,7 @@ const HomeScreen = ({route}) => {
   )
 }
 
+
 const styles = StyleSheet.create({
     shadow: {
         shadowColor: "#000",
@@ -375,6 +321,9 @@ const styles = StyleSheet.create({
         shadowRadius: 2.22,
 
         elevation: 3,
+    },
+    flatlistCards: {
+        alignItems: 'flex-start'
     }
 })
 

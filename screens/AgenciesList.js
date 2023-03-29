@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, Image, TextInput, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native'
 import React, {useLayoutEffect, useState} from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { LogoUser } from '../assets';
+import { IconSearch } from '../assets';
 import AgenciesCardContainer from '../components/AgenciesCardContainer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -20,18 +20,19 @@ const AgenciesList = () => {
 
     return (
         <SafeAreaView className=" bg-white flex-1">
-            <View className=" flex-row items-center justify-center mt-10 mb-2">
+            <View className="relative flex-row items-center rounded-lg justify-center mt-10 mx-4 mb-4 bg-[#EEEFF0]">
                 <Image
-                source={LogoUser}
-                className="w-6 h-6 object-cover"
+                    source={IconSearch}
+                    className="
+                    w-4 h-4 rounded-md 
+                    object-cover ml-4"
                 />
                 <TextInput
                     className="
-                        w-60
-                        flex-row items-center
-                        bg-[#EEEFF0] mx-4
-                        rounded-xl py-1
-                        px4 shadow-lg"        
+                    w-60
+                    flex-1 items-center py-1 px-4
+                    px4 shadow-xl"
+                    placeholder='Pesquisar'
                 />
             </View>
     
