@@ -45,7 +45,7 @@ const LoginScreen = ({route}) => {
                     />
                     <TouchableOpacity>
                         <Image
-                            source={LoginEyeIcon}
+                            source={LoginEyeIcon }
                             className="w-6 h-6 object-cover"
                         />
                     </TouchableOpacity>

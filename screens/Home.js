@@ -19,13 +19,13 @@ const Home = ({ route }) => {
     }, []);
 
     return (
-      <NavigationContainer independent={true}>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} initialParams={route.params}/>
-          <Stack.Screen name="EventDetails" component={EventDetails} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
+        <NavigationContainer independent={true}>
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={HomeScreen} initialParams={route.params}/>
+            <Stack.Screen name="EventDetails" component={EventDetails} initialParams={route.params.eventDetails}/>
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
   
 }
 

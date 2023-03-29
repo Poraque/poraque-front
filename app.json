@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Poraque",
-    "slug": "Poraque",
+    "slug": "poraque",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -32,7 +32,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "d3d73c3c-5867-48ce-8562-b61d1271face"
+        "projectId": "f432bd5a-4f43-4bcc-9bc2-d0d497288a90"
       }
     }
   }

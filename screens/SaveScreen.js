@@ -1,10 +1,12 @@
 import { View, Text, TextInput, Image, SafeAreaView, ScrollView } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { IconSearch, Local1, Local6, Local3, Local4, Local5 } from '../assets';
 import SaveCardContainer from '../components/SaveCardContainer';
+import { selectALL } from '../DBLocal/db';
 
 export default function SaveScreen() {
+    const [itemSaved, setItemSaved] = useState(false);
 
     const navigation = useNavigation();
 
@@ -13,6 +15,14 @@ export default function SaveScreen() {
             headerShown: false,
         })
     }, []);
+
+    useEffect(()=>{
+        const item = selectALL() 
+
+        if(item.length =! 0){
+            setItemSaved(item[0])
+        }
+    })
 
   return (
     <SafeAreaView className=" bg-white flex-1">
@@ -55,6 +65,11 @@ export default function SaveScreen() {
             imageSrc={Local5}
             title={'Mirante do Gavião'}
             location={'Rua Beco Francisco Cardoso Nossa Senhora Auxiliadora, Novo Airão'}/>
+            {itemSaved ?
+            <SaveCardContainer
+            imageSrc={Local1}
+            title={itemSaved.id}
+            location={'Rua Beco Francisco Cardoso Nossa Senhora Auxiliadora, Novo Airão'}/>: null}
         </ScrollView>
     </SafeAreaView>
   )

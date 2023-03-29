@@ -4,7 +4,7 @@ import React, { useLayoutEffect, useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { LogoImage, TuristsImage, MapImage, IconBrilho, IconUser, IconMala } from '../assets';
 import * as Animatable from 'react-native-animatable';
-
+import {createDB} from '../DBLocal/db'
 const SplashScreen = () => {
 
   const navigation = useNavigation();
@@ -23,12 +23,12 @@ const SplashScreen = () => {
             await api.getAllEvents().then((value)=>{
               setData(value);
             });
-            
         }catch(err){
             //dev
             console.log(err);
         }   
     }
+    createDB();
     getEvents();
   }, [])
 
