@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { API } from '../api/api';
 import { Buffer } from 'buffer';
+import { insertDB, deleteEventSaved, checkExistsOnDB } from '../DBLocal/db';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,9 +38,27 @@ const EventDetails = ({route}) => {
           
           }
         }
+
+      if(checkExistsOnDB(route.params.eventId)){
+        setLiked(true);
+      }
+
+        
       getEventDetails();    
     },[])
 
+    const btLike = () =>{
+      if(liked){
+        deleteEventSaved(route.params.eventId)
+        setLiked(false);
+      }else{
+        insertDB(route.params.eventId)
+        setLiked(true);
+      }
+
+      checkExistsOnDB(route.params.eventId).then((exists) => console.log(`O id 1 ${exists ? "existe" : "não existe"} na tabela`))
+      .catch((error) => console.error("Ocorreu um erro:", error));
+    }
     return ( data ?
         <SafeAreaView className=" bg-white flex-1">
             <View className="flex-row justify-between pt-10 px-5">
@@ -49,7 +68,7 @@ const EventDetails = ({route}) => {
                         className="w-5 h-5 object-cover"
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setLiked(!liked)}>
+                <TouchableOpacity onPress={() => btLike()}>
                     <Image
                         source={`${liked ? FullHeartIcon : EmptyHeartIcon}`}
                         className="w-5 h-5 object-cover"
