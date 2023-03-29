@@ -12,11 +12,11 @@ const EventDetails = ({route}) => {
     const navigation = useNavigation();
     const [liked, setLiked] = useState(false);
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerShown: false,
-        });
-    }, []);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
 
 
     const [data, setData] = useState(undefined);
@@ -68,54 +68,53 @@ const EventDetails = ({route}) => {
 }
 
 const styles = StyleSheet.create({
-    title: {
-      //fontFamily: 'Inter_500Medium',
-      fontSize: 20,
-      marginBottom: 10,
-      marginTop: 30,
-      marginLeft: 20,
-      color: '#393F4E'
-    },
-    image: {
-      height: 400,
-      width: 400,
-      marginTop: 15
-    },
-    text: {
-      marginLeft: 20,
-      marginRight: 20,
-      textAlign: 'justify',
-      fontSize: 14,
-      //fontFamily: 'Inter_400Regular'
-    },
-    know: {
-      marginLeft: 20,
-      marginTop: 10,
-      marginBottom: 10,
-      fontSize: 20,
-      //fontFamily: 'Inter_500Medium',
-      color: '#393F4E'
-    },
-    adress: {
-      fontSize: 15,
-      marginLeft: 20,
-      marginRight: 20,
-      textAlign: 'left'
-    },
-    floatingButtonStyle: {
-      resizeMode: 'contain',
-      width: 70,
-      height: 70,
-    },
-    touchableOpacityStyle: {
-      position: 'absolute',
-      width: 50,
-      height: 50,
-      alignItems: 'center',
-      justifyContent: 'center',
-      left: 25,
-      bottom: 120
-    },
-  })
-  
+  title: {
+    //fontFamily: 'Inter_500Medium',
+    fontSize: 20,
+    marginBottom: 10,
+    marginTop: 30,
+    marginLeft: 20,
+    color: '#393F4E'
+  },
+  image: {
+    height: 400,
+    width: 400,
+    marginTop: 15
+  },
+  text: {
+    marginLeft: 20,
+    marginRight: 20,
+    textAlign: 'justify',
+    fontSize: 14
+  },
+  know: {
+    marginLeft: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    fontSize: 20,
+    //fontFamily: 'Inter_500Medium',
+    color: '#393F4E'
+  },
+  adress: {
+    fontSize: 15,
+    marginLeft: 20,
+    marginRight: 20,
+    textAlign: 'left'
+  },
+  floatingButtonStyle: {
+    resizeMode: 'contain',
+    width: 70,
+    height: 70,
+  },
+  touchableOpacityStyle: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: 25,
+    bottom: 120
+  },
+})
+
 export default EventDetails;
